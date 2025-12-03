@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="user-profile-card">
+            <div class="user-profile-meta">
+                <div class="user-profile-label">User Profile Information</div>
+                <div class="user-profile-name" id="userProfileDisplay">Obioma</div>
+            </div>
+            <div class="name-edit">
+                <input id="userProfileInput" class="user-profile-input" type="text" placeholder="Enter name (e.g. Obioma)">
+                <button id="userProfileSaveBtn" class="btn">Save</button>
+            </div>
+        </div>
+
+        <div class="todo-area">
+            <input class="input-js" type="text" placeholder="Enter Todo">
+            <input class="input-date" type="date">
+
+            <button class="button-js" onclick="addTodo()">Add list</button>
+
+            <div class="display-todo"></div>
+        </div>
+    </main>
+    <script>
+        const todoList = [/*{
+            name: 'make diner',
+            date: '12-04-2025'
+        },
+
+        {
+            name: 'wash  dish',
+            date: '12-12-2025'
+        }*/]
+
+        todoStorage();
+
+        let display;
+        const buttonElem = document.querySelector('.button-js');
+        const inputDueDate = document.querySelector('.input-date')
+        let inputElement = document.querySelector('.input-js');
+
+        // add input to array
+        // loop through the array
+        // display
+
+        function addTodo() {
+            const inputElem = inputElement.value;
+            const inputDate = inputDueDate.value;
+
+            if(!inputElement.value) {
+                return;
+            }
+
+            todoList.push({
+                name: inputElem,
+                date: inputDate
+            })
+
+            loopThroughArray();
+
+            inputElement.value = '';
+            loopThroughArray();
+        }
+
+        function loopThroughArray() {
+            display = '';
+            todoList.forEach(function(value, index) {
+                const todoObj = todoList[index];
+                const {name, date} = todoObj
+                const html = `<div>${name}</div> <div>${date} <button onclick="
+                    todoList.splice(${index}, 1);
+                    loopThroughArray();
+                ">Delete</button></div>`;
+                display += html;
+            })
+            document.querySelector('.display-todo').innerHTML = display;
+        }
+
+        function todoStorage() {
+            localStorage.setItem('todo_list', JSON.stringify(todoList));
+            localStorage.getItem('todo_list');
+        }
+
+    </script>
+    <script>
+        // User profile name + localStorage
+        const userProfileKey = 'user_profile_name';
+        const userProfileDisplay = document.getElementById('userProfileDisplay');
+        const userProfileInput = document.getElementById('userProfileInput');
+        const userProfileSaveBtn = document.getElementById('userProfileSaveBtn');
+
+        function loadUserProfile() {
+            const stored = localStorage.getItem(userProfileKey);
+            if (stored) {
+                userProfileDisplay.textContent = stored;
+                userProfileInput.value = stored;
+            } else {
+                // default name
+                userProfileDisplay.textContent = 'Obioma';
+                userProfileInput.value;
+            }
+        }
+
+        function saveUserProfile() {
+            const val = userProfileInput.value.trim();
+            if (!val) return;
+            localStorage.setItem(userProfileKey, val);
+            userProfileDisplay.textContent = val;
+            userProfileInput.value = val;
+            userProfileSaveBtn.textContent = 'Saved ✓';
+            setTimeout(()=> userProfileSaveBtn.textContent = 'Save', 1200);
+        }
+
+        userProfileSaveBtn.addEventListener('click', saveUserProfile);
+        // allow Enter key 
+        userProfileInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') saveUserProfile(); });
+
+        loadUserProfile();
+    </script>
+    <script>
+        loopThroughArray();
+    </script>
+</body>
+</html>
